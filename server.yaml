@@ -1,0 +1,245 @@
+# OSS community server — single source of truth.
+# Edit, then re-run `uv run setup.py`. Existing roles/channels are matched by name and updated, never duplicated.
+# Colors MUST be quoted ("#RRGGBB"): an unquoted # starts a YAML comment.
+
+# Roles allowed to post in read-only channels.
+moderation_roles: [Admin, Moderator]
+
+# Static roles, not self-assignable. Created first = highest in the hierarchy.
+roles:
+  - name: Admin
+    color: "#E74C3C"
+    hoist: true
+    permissions: [administrator]
+  - name: Moderator
+    color: "#E67E22"
+    hoist: true
+    mentionable: true
+    permissions: [manage_messages, manage_threads, kick, ban, timeout, mute, move,
+                  audit_log, manage_nicknames, manage_events, mention_everyone]
+
+# Each group = one onboarding question. Each role in it = one answer.
+# A role with `channel` also gets a private channel (visible only to that role) in the group's `category`.
+# Max 12 roles per question (Discord limit): extra roles go to a "(more)" question in Channels & Roles only.
+# Max 4 groups shown at join (in_onboarding: false hides the rest).
+# Groups are created in this order: earlier groups sit higher, so their colors win on member names.
+self_roles:
+  - key: involvement
+    prompt: How are you involved in open source?
+    required: true
+    roles:
+      - {name: Maintainer,     color: "#2ECC71", emoji: "🛠️", description: I maintain one or more projects}
+      - {name: Contributor,    color: "#3498DB", emoji: "🤝", description: "I contribute to other people's projects"}
+      - {name: Mentor,         color: "#9B59B6", emoji: "🎓", mentionable: true, description: Happy to help newcomers get started}
+      - {name: First-timer,    color: "#1ABC9C", emoji: "🌱", description: Looking for my first contribution}
+      - {name: Just exploring, emoji: "👀", description: "Lurking, learning, curious"}
+
+  - key: languages
+    prompt: Which programming languages do you work with?
+    category: Languages
+    roles:
+      - {name: Python,                color: "#3776AB", channel: python}
+      - {name: JavaScript/TypeScript, color: "#F7DF1E", channel: javascript-typescript}
+      - {name: Rust,                  color: "#DEA584", channel: rust}
+      - {name: Go,                    color: "#00ADD8", channel: go}
+      - {name: Java/Kotlin,           color: "#B07219", channel: java-kotlin}
+      - {name: C/C++,                 color: "#659AD2", channel: c-cpp}
+      - {name: C#/.NET,               color: "#512BD4", channel: csharp-dotnet}
+      - {name: PHP,                   color: "#777BB4", channel: php}
+      - {name: Ruby,                  color: "#CC342D", channel: ruby}
+      - {name: Swift,                 color: "#F05138", channel: swift}
+      - {name: Dart/Flutter,          color: "#0175C2", channel: dart-flutter}
+      - {name: Functional,            color: "#5E5086", channel: functional, description: "Elixir, Haskell, OCaml, Clojure, F#..."}
+
+  - key: fields
+    prompt: What do you work on?
+    category: Fields
+    roles:
+      - {name: Frontend,          emoji: "🎨", channel: frontend}
+      - {name: Backend,           emoji: "⚙️", channel: backend}
+      - {name: DevOps/Infra,      emoji: "☁️", channel: devops-infra}
+      - {name: Mobile,            emoji: "📱", channel: mobile}
+      - {name: AI/ML,             emoji: "🤖", channel: ai-ml}
+      - {name: Security,          emoji: "🔐", channel: security}
+      - {name: Data,              emoji: "📊", channel: data}
+      - {name: Game Dev,          emoji: "🎮", channel: gamedev}
+      - {name: Embedded/Systems,  emoji: "🔌", channel: embedded-systems}
+      - {name: Docs & Writing,    emoji: "📝", channel: docs-writing}
+      - {name: Design/UX,         emoji: "✏️", channel: design-ux}
+
+  - key: spoken
+    prompt: Which languages do you speak?
+    category: International Lounges
+    required: true
+    roles:
+      - {name: English,    emoji: "🇬🇧", description: Main language of the server}
+      - {name: Français,   emoji: "🇫🇷", channel: lounge-fr}
+      - {name: Español,    emoji: "🇪🇸", channel: lounge-es}
+      - {name: Deutsch,    emoji: "🇩🇪", channel: lounge-de}
+      - {name: Português,  emoji: "🇧🇷", channel: lounge-pt}
+      - {name: Italiano,   emoji: "🇮🇹", channel: lounge-it}
+      - {name: Türkçe,     emoji: "🇹🇷", channel: lounge-tr}
+      - {name: Українська, emoji: "🇺🇦", channel: lounge-uk}
+      - {name: Русский,    emoji: "🌐", channel: lounge-ru}
+      - {name: 中文,        emoji: "🇨🇳", channel: lounge-zh}
+      - {name: 日本語,      emoji: "🇯🇵", channel: lounge-ja}
+      - {name: 한국어,      emoji: "🇰🇷", channel: lounge-ko}
+      - {name: العربية,    emoji: "🌍", channel: lounge-ar}
+
+  - key: notifications
+    prompt: Which pings do you want?
+    in_onboarding: false   # shown in Channels & Roles only
+    roles:
+      - {name: "Ping: Announcements",     emoji: "📣"}
+      - {name: "Ping: Events",            emoji: "📅"}
+      - {name: "Ping: Good First Issues", emoji: "🌱", description: "Pinged for each new batch, all languages"}
+
+# Static channels. Types: text (default), announcement, forum, voice.
+# readonly: only moderation_roles can post. private_to: only these roles can see (set on a category = applies to its channels).
+# Forums: `tags` (list) and/or `tags_from` (a self_roles key: one tag per role, max 20).
+categories:
+  - name: Start Here
+    channels:
+      - {name: rules, readonly: true, topic: Read before posting.}
+      - {name: announcements, type: announcement, readonly: true, topic: "Server news. Follow this channel to get it in your own server."}
+      - {name: introductions, topic: "Who you are, what you build, what you're looking for."}
+
+  - name: Community
+    channels:
+      - {name: general, topic: "Main chat. English please, other languages have their lounge."}
+      - {name: off-topic, topic: Anything that isn't code.}
+      - {name: hobbies, topic: Place where you share your hobbies.}
+      - {name: showcase, type: forum, tags_from: languages, topic: "One post per project. Link the repo, say what it does and what help you need."}
+
+  - name: Open Source
+    channels:
+      - {name: looking-for-contributors, type: forum, tags_from: languages, topic: "Maintainers: describe the project, the stack, and the kind of help you need."}
+      - {name: good-first-issues, topic: "One issue per message: link + language + one line of context."}
+      - {name: help, type: forum, tags_from: languages, topic: "Show what you tried, the error, and your environment. Mark solved when done."}
+      - {name: code-review, type: forum, tags_from: languages, topic: "Link a PR or a file and say what kind of feedback you want."}
+      - {name: oss-news, topic: "Releases, licensing drama, funding, tooling news."}
+
+  - name: AI
+    private_to: [AI/ML]   # pick "AI/ML" in onboarding to see this category
+    channels:
+      - {name: ai-news, topic: "Model releases, benchmarks, funding, policy."}
+      - {name: llms, topic: "Large language models: architectures, APIs, behaviour, comparisons."}
+      - {name: local-llms, topic: "Ollama, llama.cpp, vLLM, MLX, quantization, running models on your own hardware."}
+      - {name: open-models, topic: "Open-weight models, Hugging Face, licenses, model cards."}
+      - {name: ai-agents, topic: "Agent frameworks, tool use, planning, multi-agent systems."}
+      - {name: mcp, topic: Model Context Protocol servers and clients.}
+      - {name: rag-and-search, topic: "Embeddings, vector databases, rerankers, retrieval pipelines."}
+      - {name: fine-tuning, topic: "LoRA, QLoRA, RLHF/DPO, training runs, hyperparameters."}
+      - {name: ai-coding-tools, topic: "Coding assistants and agents: Claude Code, Copilot, Cursor, Aider, Continue..."}
+      - {name: prompt-engineering, topic: "Prompts, structured outputs, evals of prompts."}
+      - {name: evals-benchmarks, topic: "Evaluating models and AI apps: datasets, harnesses, LLM-as-judge."}
+      - {name: mlops, topic: "Serving, inference optimization, GPUs, monitoring, pipelines."}
+      - {name: computer-vision, topic: "Detection, segmentation, OCR, multimodal vision models."}
+      - {name: image-video-gen, topic: "Diffusion, image and video generation, ComfyUI, ControlNet."}
+      - {name: speech-audio, topic: "ASR, TTS, voice agents, music generation."}
+      - {name: datasets, topic: "Finding, building, cleaning and licensing datasets."}
+      - {name: ai-papers, topic: "Research papers: share, summarize, discuss. Link + one-line takeaway."}
+      - {name: ai-safety-ethics, topic: "Alignment, bias, privacy, licensing of training data, regulation."}
+      - {name: ai-help, type: forum, tags: [LLM, Agents, MCP, RAG, Fine-tuning, Local, Vision, Audio, MLOps, Data], topic: "Show what you tried, model, versions and hardware."}
+      - {name: ai-showcase, type: forum, tags: [LLM, Agents, MCP, RAG, Fine-tuning, Local, Vision, Audio, MLOps, Data], topic: "Your AI projects: repo link, what it does, what help you need."}
+      - {name: ai-paper-club, type: voice}
+
+  - name: Voice
+    channels:
+      - {name: pair-programming, type: voice}
+      - {name: coworking, type: voice}
+
+  - name: Staff
+    private_to: [Admin, Moderator]
+    channels:
+      - {name: mod-chat}
+      - {name: mod-log}
+
+onboarding:
+  # Channels everyone sees before choosing roles. Discord requires >= 7, with >= 5 where @everyone can post.
+  default_channels: [rules, announcements, introductions, general, off-topic, showcase,
+                     looking-for-contributors, good-first-issues, help, oss-news]
+
+community:
+  rules_channel: rules
+  updates_channel: mod-chat   # receives Discord's notices for community servers
+
+# Native AutoMod. Matched by name, updated in place. Discord limits: 6 keyword rules, 1 spam, 1 preset, 1 mention rule.
+# Profanity is NOT filtered on purpose: devs swear at their bugs.
+automod:
+  alert_channel: mod-log
+  exempt_roles: [Admin, Moderator]
+  rules:
+    - name: Slurs and sexual content
+      trigger: preset
+      presets: [sexual, slurs]
+      actions: [block, alert]
+    - name: Spam
+      trigger: spam
+      actions: [block, alert]
+    - name: Mass mentions
+      trigger: mention
+      mention_limit: 6
+      raid_protection: true
+      actions: [block, alert, {timeout: 600}]
+    - name: Scam links
+      trigger: keyword
+      keywords: ["*free nitro*", "*nitro gift*", "*nitro for free*", "*dlscord*", "*disc0rd*", "*discord-gift*",
+                 "*discordgift*", "*steamcommunlty*", "*steam gift*", "*airdrop*", "*crypto giveaway*", "*claim your reward*"]
+      actions: [{block: "Blocked: looks like a scam link."}, alert, {timeout: 3600}]
+    - name: Server invites outside showcase
+      trigger: keyword
+      regex: ['discord(?:\.gg|(?:app)?\.com/invite)/\S+']
+      exempt_channels: [showcase, looking-for-contributors, ai-showcase]
+      actions: [{block: "Invite links go in #showcase or #looking-for-contributors."}, alert]
+
+# Messages posted by the bot. Re-running edits the bot's existing message instead of reposting.
+# {channel:name} -> clickable channel, {role:Name} -> role mention (no ping).
+messages:
+  rules: |
+    # Welcome to Open Source Diggers
+    A community for people who build, maintain and contribute to open source. Beginners welcome, maintainers especially.
+
+    **1. Be respectful.** Critique code, not people. No harassment, discrimination, hate speech or personal attacks.
+    **2. English in public channels.** Other languages live in the International Lounges: pick yours in Channels & Roles.
+    **3. Ask good questions.** Use {channel:help}: what you tried, the error, versions, environment. Don't DM people for help unless they agree.
+    **4. No spam, no drive-by promotion.** Self-promotion goes in {channel:showcase} and {channel:looking-for-contributors}, one post per project. No DM advertising.
+    **5. Respect licenses and credit.** No pirated software, leaked code, or someone else's work without attribution.
+    **6. Responsible disclosure.** Report vulnerabilities privately to the maintainers, never in public channels. No malware, no attacks on live systems.
+    **7. Be honest about AI.** Say when a contribution or answer is mostly AI-generated, check it before posting, and follow each project's AI policy.
+    **8. Keep it safe for work.** No NSFW or illegal content.
+    **9. Follow Discord's rules.** <https://discord.com/terms> and <https://discord.com/guidelines>
+
+    **Moderation.** Moderators may remove content, time out or ban, at their discretion. See something wrong? Ping {role:Moderator}.
+
+    New here? Say hi in {channel:introductions}, and find something to work on in {channel:good-first-issues}.
+
+# GitHub good-first-issue feed (gfi_feed.py, run by .github/workflows/good-first-issues.yml).
+# Each run: up to max_per_language issues in each language channel (#python...: only that role sees it, no ping),
+# plus a digest of up to max_per_run in the public channel, which pings the opt-in role. 1 issue per repo per run.
+gfi_feed:
+  channel: good-first-issues        # digest channel; setup.py creates all webhooks and writes GFI_WEBHOOKS to .env
+  webhook_name: Good First Issues
+  ping_role: "Ping: Good First Issues"
+  ping_role_id: "1571536889566068876"          # the webhook can't look roles up by name
+  labels: ["good first issue", "good-first-issue"]
+  min_stars: 200
+  max_age_days: 14
+  max_per_run: 10
+  max_per_language: 3
+  skip_if_linked_pr: true           # skip issues with a linked PR (Development sidebar or "fixes #N")
+  blocklist: []                     # owner/repo to never post
+  # role name (colors come from self_roles) -> GitHub language qualifiers
+  languages:
+    Python: [python]
+    JavaScript/TypeScript: [typescript, javascript]
+    Rust: [rust]
+    Go: [go]
+    Java/Kotlin: [java, kotlin]
+    C/C++: [c, c++]
+    C#/.NET: [c#]
+    PHP: [php]
+    Ruby: [ruby]
+    Swift: [swift]
+    Dart/Flutter: [dart]
+    Functional: [elixir, haskell, ocaml, clojure, f#, erlang, scala]

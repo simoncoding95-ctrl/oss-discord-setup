@@ -1,0 +1,35 @@
+name: good-first-issues
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"   # every 6 hours (GitHub may delay scheduled runs)
+  workflow_dispatch:
+
+permissions:
+  contents: write            # commit gfi_posted.json back
+
+concurrency:
+  group: gfi-feed
+  cancel-in-progress: false
+
+jobs:
+  feed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Post new good first issues
+        run: uv run gfi_feed.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GFI_WEBHOOKS: ${{ secrets.GFI_WEBHOOKS }}
+      - name: Save posted state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gfi_posted.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(gfi): update posted issues"
+            git push
+          fi
