@@ -12,7 +12,7 @@ pings the opt-in role. Reads `gfi_feed` in server.yaml, remembers posted URLs in
     uv run gfi_feed.py --dry-run   # print what would be posted
     uv run gfi_feed.py             # post
 
-Env: GITHUB_TOKEN (any token, read-only is enough), GFI_WEBHOOKS (JSON {channel: webhook URL}, from setup.py).
+Env: GITHUB_TOKEN (any token, read-only is enough), DISCORD_WEBHOOKS (JSON {channel: webhook URL}, from setup.py).
 """
 from __future__ import annotations
 
@@ -181,9 +181,9 @@ def main() -> None:
               for g in cfg["self_roles"] for r in g["roles"] if r.get("color")}
     lang_chans = {r["name"]: r["channel"] for g in cfg["self_roles"] for r in g["roles"] if r.get("channel")}
     token = os.environ.get("GITHUB_TOKEN")
-    hooks = json.loads(os.environ.get("GFI_WEBHOOKS") or "{}")
+    hooks = json.loads(os.environ.get("DISCORD_WEBHOOKS") or "{}")
     if not token or (not hooks and not args.dry_run):
-        sys.exit("✗ GITHUB_TOKEN and GFI_WEBHOOKS are required")
+        sys.exit("✗ GITHUB_TOKEN and DISCORD_WEBHOOKS are required")
 
     posted = json.loads(STATE.read_text()) if STATE.exists() else []
     seen = set(posted)

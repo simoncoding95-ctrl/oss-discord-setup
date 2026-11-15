@@ -357,36 +357,40 @@ def sync_messages(d: Discord, cfg: dict, role_ids: dict, chan_ids: dict) -> None
             print(f"  ~ #{chan}")
 
 
-def ensure_gfi_webhooks(d: Discord, cfg: dict, chan_ids: dict) -> None:
-    """One webhook per feed destination (digest + each language channel), saved as JSON in .env (GFI_WEBHOOKS)."""
+def ensure_webhooks(d: Discord, cfg: dict, chan_ids: dict) -> None:
+    """One webhook per feed destination, saved as JSON {channel: url} in .env (DISCORD_WEBHOOKS)."""
     import json
+    wanted: dict[str, str] = {}  # channel -> webhook name
     feed = cfg.get("gfi_feed")
-    if not feed:
-        return
-    lang_chans = {r["name"]: r["channel"] for g in cfg["self_roles"] for r in g["roles"] if r.get("channel")}
-    dests = [feed["channel"]] + [lang_chans[role] for role in feed["languages"] if role in lang_chans]
-    current = json.loads(os.environ.get("GFI_WEBHOOKS") or "{}")
-    missing = [c for c in dests if c not in current]
-    if not missing:
+    if feed:
+        lang_chans = {r["name"]: r["channel"] for g in cfg["self_roles"] for r in g["roles"] if r.get("channel")}
+        for chan in [feed["channel"]] + [lang_chans[r] for r in feed["languages"] if r in lang_chans]:
+            wanted[chan] = feed["webhook_name"]
+    for block in cfg.get("rss", []):
+        wanted[block["channel"]] = block["webhook_name"]
+    current = json.loads(os.environ.get("DISCORD_WEBHOOKS") or os.environ.get("GFI_WEBHOOKS") or "{}")
+    missing = [c for c in wanted if c not in current]
+    if not missing and "DISCORD_WEBHOOKS" in os.environ:
         return
     print("\n== Feed webhooks")
     for chan in missing:
         cid = chan_ids[chan]
         hooks = d.req("GET", f"/channels/{cid}/webhooks") or []
-        hook = next((h for h in hooks if h.get("name") == feed["webhook_name"] and h.get("token")), None)
+        hook = next((h for h in hooks if h.get("name") == wanted[chan] and h.get("token")), None)
         if hook is None:
-            hook = d.req("POST", f"/channels/{cid}/webhooks", {"name": feed["webhook_name"]})
+            hook = d.req("POST", f"/channels/{cid}/webhooks", {"name": wanted[chan]})
             print(f"  + #{chan}")
         if not d.dry_run:
             current[chan] = f"https://discord.com/api/webhooks/{hook['id']}/{hook['token']}"
     if d.dry_run:
         return
     env = HERE / ".env"
-    lines = [l for l in env.read_text().splitlines() if not l.startswith(("GFI_WEBHOOKS=", "GFI_WEBHOOK_URL="))]
-    lines.append("GFI_WEBHOOKS=" + json.dumps(current, separators=(",", ":")))
-    env.write_text("\n".join(lines) + "\n")
-    os.environ["GFI_WEBHOOKS"] = lines[-1].split("=", 1)[1]
-    print(f"  {len(current)} webhook URLs written to .env (GFI_WEBHOOKS)")
+    keep = [l for l in env.read_text().splitlines()
+            if not l.startswith(("DISCORD_WEBHOOKS=", "GFI_WEBHOOKS=", "GFI_WEBHOOK_URL="))]
+    value = json.dumps(current, separators=(",", ":"))
+    env.write_text("\n".join(keep + [f"DISCORD_WEBHOOKS={value}"]) + "\n")
+    os.environ["DISCORD_WEBHOOKS"] = value
+    print(f"  {len(current)} webhook URLs written to .env (DISCORD_WEBHOOKS)")
 
 
 def make_invite(d: Discord, chan_id: str) -> None:
@@ -481,7 +485,7 @@ def main() -> None:
         sync_onboarding(d, gid, cfg, role_ids, chan_ids)
     sync_automod(d, gid, cfg, role_ids, chan_ids)
     sync_messages(d, cfg, role_ids, chan_ids)
-    ensure_gfi_webhooks(d, cfg, chan_ids)
+    ensure_webhooks(d, cfg, chan_ids)
     if args.invite:
         make_invite(d, chan_ids[args.invite])
     print("\n✓ Done" + (" (nothing was changed)" if args.dry_run else ""))

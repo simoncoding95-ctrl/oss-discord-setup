@@ -34,8 +34,14 @@ uv run setup.py             # apply
 
 Each issue goes to its language channel (only that role sees it, no ping); a digest goes to `#good-first-issues` with an opt-in ping.
 
-Repo secret needed: `GFI_WEBHOOKS` (JSON `{channel: webhook URL}`, written to `.env` by `setup.py`).
+Repo secret needed: `DISCORD_WEBHOOKS` (see below).
 
 ```sh
 GITHUB_TOKEN=$(gh auth token) uv run gfi_feed.py --dry-run
 ```
+
+## RSS feeds
+
+`rss_feed.py` posts new items from the feeds in `rss` (server.yaml) every 2 hours via `.github/workflows/rss.yml`. Default: AI news (labs, Hugging Face, newsletters, Hacker News, releases of Ollama/vLLM/Transformers/MCP) into `#ai-news`. Pre-releases are skipped; a new feed only posts its latest item. Seen items: `rss_seen.json`.
+
+Repo secret: `DISCORD_WEBHOOKS` (JSON `{channel: webhook URL}`, written to `.env` by `setup.py`), shared by both feeds.
