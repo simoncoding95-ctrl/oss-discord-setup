@@ -11,6 +11,7 @@ A feed that fails (timeout, 5xx, bad XML) is skipped for this run, never fatal.
 
     uv run rss_feed.py --dry-run
     uv run rss_feed.py
+    uv run rss_feed.py --seed      # mark everything currently in the feeds as seen, post nothing
 
 Env: DISCORD_WEBHOOKS (JSON {channel: webhook URL}, from setup.py).
 """
@@ -103,6 +104,7 @@ def send(hook: str, name: str, embeds: list[dict]) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--seed", action="store_true", help="mark current items as seen without posting")
     args = ap.parse_args()
     load_env()
     cfg = yaml.safe_load((HERE / "server.yaml").read_text(encoding="utf-8"))
@@ -123,6 +125,10 @@ def main() -> None:
             entries = sorted(entries, key=lambda e: entry_time(e) or datetime.min.replace(tzinfo=timezone.utc),
                              reverse=True)[:RECENT]
             ids = [e.get("id") or e.get("link") for e in entries]
+            if args.seed:
+                state[f["url"]] = ids
+                print(f"  seeded {f['name']}: {len(ids)}")
+                continue
             if seen is None:  # first time: only the latest item, mark the rest as seen
                 fresh = entries[:1]
                 state[f["url"]] = ids[1:SEEN_PER_FEED]
@@ -138,7 +144,7 @@ def main() -> None:
             print(f"  #{block['channel']} ← [{name}] {text(e.get('title', ''), 90)}")
         if overflow:
             print(f"  ({len(overflow)} older items skipped, max_per_run reached)")
-        if args.dry_run:
+        if args.dry_run or args.seed:
             continue
         if new:
             send(hooks[block["channel"]], block["webhook_name"], [embed(n, e, color) for _, n, e, _, _ in new])
