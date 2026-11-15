@@ -32,7 +32,8 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 STATE = HERE / "rss_seen.json"
-SEEN_PER_FEED = 300
+RECENT = 30          # only the newest RECENT entries of a feed are ever considered (some feeds hold 1000+ items)
+SEEN_PER_FEED = 300  # must stay > RECENT
 PRERELEASE = re.compile(r"(?i)(\d[-.]?rc\d*\b|\brc\d+\b|\balpha\b|\bbeta\b|\bnightly\b|\.dev\d)")
 UA = "oss-discord-setup feed reader (+https://github.com/simoncoding95-ctrl/oss-discord-setup)"
 
@@ -120,7 +121,7 @@ def main() -> None:
             seen = state.get(f["url"])
             entries = [e for e in parsed.entries if not PRERELEASE.search(e.get("title", ""))]
             entries = sorted(entries, key=lambda e: entry_time(e) or datetime.min.replace(tzinfo=timezone.utc),
-                             reverse=True)
+                             reverse=True)[:RECENT]
             ids = [e.get("id") or e.get("link") for e in entries]
             if seen is None:  # first time: only the latest item, mark the rest as seen
                 fresh = entries[:1]

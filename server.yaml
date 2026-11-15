@@ -244,6 +244,7 @@ gfi_feed:
     Dart/Flutter: [dart]
     Functional: [elixir, haskell, ocaml, clojure, f#, erlang, scala]
 
+# Feeds must accept requests from GitHub Actions IPs (Substack and hnrss.org refused them: 403/502).
 # RSS/Atom feeds posted by rss_feed.py (.github/workflows/rss.yml). New items only; the first run posts the latest item per feed.
 rss:
   - channel: ai-news
@@ -256,9 +257,7 @@ rss:
       - {name: Google AI, url: "https://blog.google/technology/ai/rss/"}
       - {name: Hugging Face, url: "https://huggingface.co/blog/feed.xml"}
       - {name: Simon Willison, url: "https://simonwillison.net/atom/entries/"}
-      - {name: Import AI, url: "https://importai.substack.com/feed"}
       - {name: Ahead of AI, url: "https://magazine.sebastianraschka.com/feed"}
-      - {name: "Hacker News (AI, 300+ points)", url: "https://hnrss.org/newest?q=LLM+OR+AI&points=300"}
       - {name: Ollama release, url: "https://github.com/ollama/ollama/releases.atom"}
       - {name: vLLM release, url: "https://github.com/vllm-project/vllm/releases.atom"}
       - {name: Transformers release, url: "https://github.com/huggingface/transformers/releases.atom"}
