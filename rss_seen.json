@@ -1,5 +1,12 @@
 {
  "https://openai.com/news/rss.xml": [
+  "https://openai.com/index/the-kings-trust-and-openai",
+  "https://openai.com/index/strengthening-online-child-safety",
+  "https://openai.com/index/expanding-chatgpt-for-academic-researchers",
+  "https://openai.com/index/science-at-the-frontier",
+  "https://openai.com/index/our-first-phase-of-embedded-assessments",
+  "https://openai.com/index/more-ways-to-move-care-forward-with-chatgpt-for-healthcare",
+  "https://openai.com/index/advancing-computer-use-for-healthcare-teams",
   "https://openai.com/index/lvmh-media-division-partnership",
   "https://openai.com/index/step-toward-defining-the-standard-model",
   "https://openai.com/index/our-new-blog-for-science",
@@ -67,6 +74,7 @@
   "https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/"
  ],
  "https://blog.google/technology/ai/rss/": [
+  "https://blog.google/products-and-platforms/products/maps/ask-maps-holiday-travel-features-2026/",
   "https://blog.google/products-and-platforms/products/search/gemini-4-hydrogen-search-upgrade/",
   "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
   "https://blog.google/innovation-and-ai/models-and-research/google-labs/tabletop/",
@@ -89,6 +97,7 @@
   "https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/"
  ],
  "https://huggingface.co/blog/feed.xml": [
+  "https://huggingface.co/blog/openrouter",
   "https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place",
   "https://huggingface.co/blog/allenai/xybench",
   "https://huggingface.co/blog/ggml-org/llama-cpp-v1",
@@ -160,6 +169,7 @@
   "https://magazine.sebastianraschka.com/p/llm-evaluation-4-approaches"
  ],
  "https://github.com/ollama/ollama/releases.atom": [
+  "tag:github.com,2008:Repository/658928958/v0.40.17-rc1",
   "tag:github.com,2008:Repository/658928958/v0.40.17-rc0",
   "tag:github.com,2008:Repository/658928958/v0.40.16",
   "tag:github.com,2008:Repository/658928958/v0.40.15",
