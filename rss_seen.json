@@ -1,5 +1,9 @@
 {
  "https://openai.com/news/rss.xml": [
+  "https://openai.com/index/introducing-gpt-6-2-astra-sol",
+  "https://openai.com/index/astra-law-6-2",
+  "https://openai.com/index/introducing-openai-for-chile",
+  "https://openai.com/ads/blog/chatgpt-ads-increases-its-market-presence",
   "https://openai.com/index/strengthening-nato-allied-cyber-defences-ai",
   "https://openai.com/business/customer-stories/revolut",
   "https://openai.com/business/customer-stories/holiday-extras-dots",
@@ -77,6 +81,7 @@
   "https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/"
  ],
  "https://blog.google/technology/ai/rss/": [
+  "https://blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features/",
   "https://blog.google/products-and-platforms/products/maps/ask-maps-holiday-travel-features-2026/",
   "https://blog.google/products-and-platforms/products/search/gemini-4-hydrogen-search-upgrade/",
   "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
@@ -133,6 +138,7 @@
   "https://huggingface.co/blog/reflection-beam"
  ],
  "https://simonwillison.net/atom/entries/": [
+  "https://simonwillison.net/2026/Nov/17/datasette-lite/",
   "https://simonwillison.net/2026/Nov/9/mysterious-beeps/",
   "https://simonwillison.net/2026/Nov/9/details-summary/",
   "https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/",
