@@ -1,5 +1,6 @@
 {
  "https://openai.com/news/rss.xml": [
+  "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
   "https://openai.com/business/customer-stories/sumitomo-life",
   "https://openai.com/index/research-acceleration-jagged-frontier",
   "https://openai.com/index/managing-frontier-ai-risk",
@@ -91,6 +92,8 @@
   "https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/"
  ],
  "https://blog.google/technology/ai/rss/": [
+  "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
+  "https://blog.google/innovation-and-ai/technology/ai/dialogues-walter-isaacson/",
   "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
   "https://blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features/",
   "https://blog.google/products-and-platforms/products/maps/ask-maps-holiday-travel-features-2026/",
