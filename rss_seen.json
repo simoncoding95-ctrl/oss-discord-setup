@@ -1,5 +1,8 @@
 {
  "https://openai.com/news/rss.xml": [
+  "https://openai.com/index/combatting-adversarial-distillation",
+  "https://openai.com/index/introducing-medchembench",
+  "https://openai.com/business/customer-stories/hebbia",
   "https://openai.com/business/learn/daybreak-blue-onboarding-demo",
   "https://openai.com/business/learn/codex-security-plugin-demo",
   "https://openai.com/business/learn/pr-scans-demo",
@@ -123,6 +126,8 @@
   "https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/"
  ],
  "https://huggingface.co/blog/feed.xml": [
+  "https://huggingface.co/blog/harness-adapters-at-scale",
+  "https://huggingface.co/blog/inkling2mini",
   "https://huggingface.co/blog/rumble-2-flash",
   "https://huggingface.co/blog/moe-expert-streaming",
   "https://huggingface.co/blog/RadixArk/daisyrose-27b-pushing-the-frontier-of-post-trainin",
@@ -201,6 +206,7 @@
   "https://magazine.sebastianraschka.com/p/llm-evaluation-4-approaches"
  ],
  "https://github.com/ollama/ollama/releases.atom": [
+  "tag:github.com,2008:Repository/658928958/v0.40.17-rc3",
   "tag:github.com,2008:Repository/658928958/v0.40.17-rc2",
   "tag:github.com,2008:Repository/658928958/v0.40.17-rc1",
   "tag:github.com,2008:Repository/658928958/v0.40.17-rc0",
