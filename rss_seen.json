@@ -74,6 +74,7 @@
   "https://openai.com/index/a-thousand-fewer-paths-to-root"
  ],
  "https://deepmind.google/blog/rss.xml": [
+  "https://deepmind.google/blog/interpreting-mass-spectra-with-google-antigravity/",
   "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/",
   "https://deepmind.google/blog/introducing-gemini-4-neon/",
   "https://deepmind.google/blog/genie-4-is-now-available/",
@@ -138,6 +139,8 @@
   "https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/"
  ],
  "https://huggingface.co/blog/feed.xml": [
+  "https://huggingface.co/blog/allenai/where-scientists-draw-the-line-on-ai-agents",
+  "https://huggingface.co/blog/inkling-2-mini-inference-hillclimb",
   "https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga",
   "https://huggingface.co/blog/nvidia/microduck-obstacle-avoidance",
   "https://huggingface.co/blog/allenai/robotrack",
