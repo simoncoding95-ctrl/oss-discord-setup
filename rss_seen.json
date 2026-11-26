@@ -139,6 +139,8 @@
   "https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/"
  ],
  "https://huggingface.co/blog/feed.xml": [
+  "https://huggingface.co/blog/ggml-org/llamacpp-amd-bench",
+  "https://huggingface.co/blog/training-swarms",
   "https://huggingface.co/blog/nvidia/building-on-nemotron-35-parse-open-data-fine-tunin",
   "https://huggingface.co/blog/allenai/where-scientists-draw-the-line-on-ai-agents",
   "https://huggingface.co/blog/inkling-2-mini-inference-hillclimb",
@@ -227,6 +229,7 @@
   "https://magazine.sebastianraschka.com/p/llm-evaluation-4-approaches"
  ],
  "https://github.com/ollama/ollama/releases.atom": [
+  "tag:github.com,2008:Repository/658928958/v0.40.19-rc0",
   "tag:github.com,2008:Repository/658928958/v0.40.18",
   "tag:github.com,2008:Repository/658928958/v0.40.18-rc0",
   "tag:github.com,2008:Repository/658928958/v0.40.17",
